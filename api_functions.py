@@ -61,6 +61,18 @@ def get_route_info(orig, dest):
         # Other errors
         return {"status": "error", "message": f"Status Code: {json_status}. Refer to the MapQuest API documentation for details."}
     
+def get_timezone_info(lat, lng, timestamp):
+    google_api_key = os.getenv("GOOGLE_API_KEY")  
+    timezone_api_url = "https://maps.googleapis.com/maps/api/timezone/json"
+    params = {
+        "location": f"{lat},{lng}",
+        "timestamp": timestamp,
+        "key": google_api_key
+    }
+    response = requests.get(timezone_api_url, params=params)
+    return response.json()
+
+
 def get_sun_info(lat, lng):
     main_api = "https://api.sunrise-sunset.org/json?"
     url = main_api + urllib.parse.urlencode({"lat": lat, "lng": lng, "formatted": 0})
